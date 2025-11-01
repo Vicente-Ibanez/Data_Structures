@@ -14,10 +14,9 @@ class Token(object):
 
     UNKNOWN  = 0        # unknown
 
-    PLUSMIN = 1
-    MULDIV = 2   
-    EXPO = 3
-
+    # PLUSMIN  = 1
+    # MULDIV   = 2   
+    # EXPO     = 3
     INT      = 4        # integer
             
     MINUS    = 5        # minus    operator
@@ -25,6 +24,11 @@ class Token(object):
     MUL      = 7        # multiply operator
     DIV      = 8        # divide   operator
     
+    EXPO     = 9        # exponent operator
+
+    LPAR     = 10
+    RPAR     = 11
+
     FIRST_OP = 5        # first operator code
 
     def __init__(self, value):
@@ -51,16 +55,19 @@ class Token(object):
         elif ch == '/': return Token.DIV
         elif ch == '+': return Token.PLUS
         elif ch == '-': return Token.MINUS
+        elif ch == '(': return Token.LPAR
+        elif ch == ')': return Token.RPAR
+        elif ch == '^': return Token.EXPO
         else:           return Token.UNKNOWN
 
     def getPrecedence(self):
         """Returns the precedunce level of an operator."""
         if self.getType() in (Token.MUL, Token.DIV):
-            return Token.MULDIV
+            return 2
         elif self.getType() in (Token.PLUS, Token.MINUS):
-            return Token.PLUSMIN
-        elif self.value == '^':
-            return Token.EXPO
+            return 1
+        elif self.getValue == Token.EXPO:
+            return 3
 
 
 
