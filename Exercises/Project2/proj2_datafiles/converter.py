@@ -53,22 +53,19 @@ class IFToPFConverter(object):
                 postfix.append(currentToken)
             elif currentToken.getType() == Token.LPAR: # Step 4
                 stack.push(currentToken)
-            elif currentToken.isOperator(): # Step 5
-                print("Current Token:", currentToken.getValue())
-                while (not stack.isEmpty()) and stack.peek().getPrecedence() >= currentToken.getPrecedence():
-                    postfix.append(stack.pop())
-                stack.push(currentToken)
             elif currentToken.getType() == Token.RPAR: # Step 6
                 topOperator = stack.pop()
                 while topOperator.getType() != Token.LPAR:
                     postfix.append(topOperator)
                     topOperator = stack.pop()
-            # elif currentToken.getType() == Token.EXPO:
+            elif currentToken.isOperator(): # Step 5
+                while \
+                    (not stack.isEmpty()) \
+                    and stack.peek().getPrecedence() >= currentToken.getPrecedence() \
+                    and currentToken.getType() != Token.EXPO:
+                    postfix.append(stack.pop())
 
-                # stack.pop()  
-            # elif currentToken.getValue() == ";": # Step 7
-            #     while (not stack.isEmpty()):
-            #         postfix.append(stack.pop())
+                stack.push(currentToken)
         
         while not stack.isEmpty():
             postfix.append(stack.pop())

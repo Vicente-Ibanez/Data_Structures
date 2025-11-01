@@ -66,8 +66,10 @@ class Token(object):
             return 2
         elif self.getType() in (Token.PLUS, Token.MINUS):
             return 1
-        elif self.getValue == Token.EXPO:
+        elif self.getType() == Token.EXPO:
             return 3
+        else:
+            return 0
 
 
 
