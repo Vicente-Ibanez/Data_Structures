@@ -13,6 +13,28 @@ class IFToPFConverter(object):
 
     def __init__(self, scanner):
         self.scanner = scanner
+        self.expressionSoFar = None
+
+    def __str__(self):
+        """Returns a string respentation of the postfix expression.
+        Returns the portion of the expression that was converted so far.
+        Also returns the operators still on the stack.
+        """
+        rv = "\n"
+        if len(self.expressionSoFar) != 0:
+            rv = "Expression so far:" + "".join(map(lambda esf: str(esf.getValue()) + " ", self.expressionSoFar)) + "\n"
+        else:
+            rv = "Expression so far: none\n" 
+
+        if self.operatorStack.isEmpty():
+            rv += "The stack is empty"
+        else:
+            rv += "Operators on stack: " + "".join(map(lambda os: str(os.getValue()) + " ", self.operatorStack))
+
+        return rv
+
+    # def conversionStatus(self):
+        
 
     def convert(self):
         """Returns a list of tokens that represent the postfix
@@ -45,7 +67,9 @@ class IFToPFConverter(object):
         """
         # Step 1
         postfix = []
+        self.expressionSoFar = postfix
         stack = ArrayStack()
+        self.operatorStack = stack
 
         while self.scanner.hasNext(): # Step 2
             currentToken = self.scanner.next()
@@ -59,14 +83,21 @@ class IFToPFConverter(object):
                     postfix.append(topOperator)
                     topOperator = stack.pop()
             elif currentToken.isOperator(): # Step 5
-                while \
-                    (not stack.isEmpty()) \
-                    and stack.peek().getPrecedence() >= currentToken.getPrecedence() \
-                    and currentToken.getType() != Token.EXPO:
+                # TO DO: If the operatorStack is empty raise an AttributeError: Too few operators
+                while (not stack.isEmpty()) \
+                    and stack.peek().getPrecedence() >= currentToken.getPrecedence() and currentToken.getType() != Token.EXPO:
+                    if stack.isEmpty():
+                        raise AttributeError("Too few operators")
                     postfix.append(stack.pop())
+                    
 
                 stack.push(currentToken)
         
+            elif currentToken.getType() == Token.UNKNOWN:
+                raise AttributeError("Unrecognized symbol")
+            
+
+
         while not stack.isEmpty():
             postfix.append(stack.pop())
         return postfix
