@@ -3,6 +3,10 @@ File: converter.py
 Project 7.5
 
 Defines a class that converts infix expressions to postfix form.
+
+Programmer: Vicente Ibanez
+Problem: Converting a infix statement to a postfix statement that a user inputs.
+Date: 11/03/2025
 """
 
 from tokens import Token
@@ -14,6 +18,7 @@ class IFToPFConverter(object):
     def __init__(self, scanner):
         self.scanner = scanner
         self.expressionSoFar = None
+        self.current_token = None
 
     def __str__(self):
         """Returns a string respentation of the postfix expression.
@@ -22,7 +27,7 @@ class IFToPFConverter(object):
         """
         rv = "\n"
         if len(self.expressionSoFar) != 0:
-            rv = "Expression so far:" + "".join(map(lambda esf: str(esf.getValue()) + " ", self.expressionSoFar)) + "\n"
+            rv = "Expression so far: " + "".join(map(lambda esf: str(esf.getValue()) + " ", self.expressionSoFar)) + "\n"
         else:
             rv = "Expression so far: none\n" 
 
@@ -34,7 +39,23 @@ class IFToPFConverter(object):
         return rv
 
     def conversionStatus(self):
-        
+        """This method is used to display the current state of the conversion.
+        It returns the portion of the expression scanned. 
+        It can be used to assist with error handling."""
+        rv = "\n"
+        if len(self.expressionSoFar) != 0:
+            rv = "Expression so far: " + "".join(map(lambda esf: str(esf.getValue()) + " ", self.expressionSoFar)) + "\n"
+        else:
+            rv = "Expression so far: none\n" 
+
+        if self.operatorStack.isEmpty():
+            print("The stack is empty")
+            rv += "The stack is empty"
+        else:
+            rv += "Operators on stack: " + "".join(map(lambda os: str(os.getValue()) + " ", self.operatorStack))
+
+        return rv
+
 
     def convert(self):
         """Returns a list of tokens that represent the postfix
@@ -73,6 +94,7 @@ class IFToPFConverter(object):
 
         while self.scanner.hasNext(): # Step 2
             currentToken = self.scanner.next()
+            self.current_token = currentToken
 
             if currentToken.getType() == Token.UNKNOWN:
                 raise AttributeError("Unrecognized symbol")
@@ -111,10 +133,17 @@ def main():
         s = input("Enter an infix expression:")
         if s =="":
             break
-        scanner = Scanner(s)
-        converter = IFToPFConverter(scanner)
-        postfix = converter.convert()
-        print("Postfix expression: ", "".join(map(lambda pf: str(pf.getValue()) + " ", postfix)))
+
+        try:
+            scanner = Scanner(s)
+            converter = IFToPFConverter(scanner)
+            postfix = converter.convert()
+            print("Postfix expression: ", "".join(map(lambda pf: str(pf.getValue()) + " ", postfix)))
+        except Exception as e:
+            print(e, end=". ")
+            print(converter.conversionStatus(), end=". ")
+            print("The token that caused the error:", str(converter.current_token.getValue()))
+
 
 
 if __name__ == "__main__":
