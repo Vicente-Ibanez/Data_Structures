@@ -33,7 +33,7 @@ class IFToPFConverter(object):
 
         return rv
 
-    # def conversionStatus(self):
+    def conversionStatus(self):
         
 
     def convert(self):
@@ -73,7 +73,10 @@ class IFToPFConverter(object):
 
         while self.scanner.hasNext(): # Step 2
             currentToken = self.scanner.next()
-            if currentToken.getType() == Token.INT: # Step 3
+
+            if currentToken.getType() == Token.UNKNOWN:
+                raise AttributeError("Unrecognized symbol")
+            elif currentToken.getType() == Token.INT: # Step 3
                 postfix.append(currentToken)
             elif currentToken.getType() == Token.LPAR: # Step 4
                 stack.push(currentToken)
@@ -92,9 +95,6 @@ class IFToPFConverter(object):
                     
 
                 stack.push(currentToken)
-        
-            elif currentToken.getType() == Token.UNKNOWN:
-                raise AttributeError("Unrecognized symbol")
             
 
 
