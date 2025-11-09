@@ -3,7 +3,7 @@ File: scanner.py
 A scanner for processing languages.
 """
 
-from tokens import Token
+from tokensIbanez import Token
 
 class Scanner(object):
 

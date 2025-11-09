@@ -9,7 +9,7 @@ Problem: Converting a infix statement to a postfix statement that a user inputs.
 Date: 11/03/2025
 """
 
-from tokens import Token
+from tokensIbanez import Token
 from scanner import Scanner
 from arraystack import ArrayStack
 
@@ -158,6 +158,7 @@ def main():
 def testMain(testCase):
     """This function acts line the main function for the test() function."""
     try:
+        print("Enter an infix expression: ", testCase)
         scanner = Scanner(testCase)
         converter = IFToPFConverter(scanner)
         postfix = converter.convert()
@@ -169,11 +170,19 @@ def testMain(testCase):
 
 def test():
     """ A tester function for convert.py"""
-    test1 = "3 * 0"
-    test2 = "3 4 2 5"
-    test3 = "5 + 6 - 3 & 9"
-    test4 = "2 $ 3"
-    test5 = "2$"
+
+
+    test1 = "2 * 3 * 4"
+    test2 = "2 ^ 2 ^ 3"
+    test3 = "2 ^ (2 ^ 3)"
+    test4 = "3 * 0"
+    test5 = "3 4 2 5"
+    test6 = "5 + 6 - 3 & 9"
+    test7 = "2 $ 3"
+    test8 = "2$"
+
+
+
     try:
         testMain(test1)
         print("Test 1 Passed")
@@ -182,27 +191,45 @@ def test():
 
     try:
         testMain(test2)
-        print("Test 2 Failed")
+        print("Test 2 Passed")
     except Exception as e:
-        print("Test 2 Passed", e)
+        print("Test 2 Failed", e)
 
     try:
         testMain(test3)
-        print("Test 3 Failed")
+        print("Test 3 Passed")
     except Exception as e:
-        print("Test 3 Passed", e)
+        print("Test 3 Failed", e)
 
     try:
         testMain(test4)
-        print("Test 4 Failed")
+        print("Test 4 Passed")
     except Exception as e:
-        print("Test 4 Passed", e)
-    
+        print("Test 4 Failed", e)
+
     try:
         testMain(test5)
         print("Test 5 Failed")
     except Exception as e:
         print("Test 5 Passed", e)
+
+    try:
+        testMain(test6)
+        print("Test 6 Failed")
+    except Exception as e:
+        print("Test 6 Passed", e)
+    
+    try:
+        testMain(test7)
+        print("Test 7 Failed")
+    except Exception as e:
+        print("Test 7 Passed", e)
+
+    try:
+        testMain(test8)
+        print("Test 8 Failed")
+    except Exception as e:
+        print("Test 8 Passed", e)
 
     print("The test above made sure postfix was working as expected and tested every exception.")
 
