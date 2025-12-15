@@ -1,0 +1,20 @@
+Most word processors have a feature
+called word wrap, which automatically
+moves the user’s next word down a line
+when the right margin is reached. To
+explore how this feature works, write a
+program that allows the user to reformat
+the text in a file. The user should input
+the line width in characters and input
+the names of the input and output files.
+The program should then input the words
+from the file into a list of sublists.
+Each sublist represents a line of text to
+be output to the file. As the words are
+input into each sublist, the program
+tracks the length of that line to ensure
+that it is less than or equal to the
+user’s line length. When all the words
+have been entered into the sublists, the
+program should traverse them to write
+their contents to the output file.
