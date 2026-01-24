@@ -1,12 +1,12 @@
 class Array(object):
     """Represents an array data structure."""
 
-    def __init__(self, capacity, fill_value=None):
+    def __init__(self, capacity=10, fill_value=None):
         """Initialize the array with a given capacity and fill value."""
         DEFAULT_CAPACITY = 10
         
         self.items = list()
-        for count in range(DEFAULT_CAPACITY):
+        for count in range(capacity):
             self.items.append(fill_value)
 
     def __len__(self):
